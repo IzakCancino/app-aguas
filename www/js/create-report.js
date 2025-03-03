@@ -140,7 +140,7 @@ $("#form-create-report").on("submit", e => {
       { "Authorization": `Basic ${data.IdUser}/${localStorage.getItem("SessionToken")}` }
     ),
     success: function (data) {
-      window.location.href = "user-record.html";
+      window.location.href = "user-record.html?create=1";
     },
     error: function (xhr, status, error) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);

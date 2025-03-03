@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!--
+        Customize this policy to fit your own app's needs. For more guidance, please refer to the docs:
+            https://cordova.apache.org/docs/en/latest/
+        Some notes:
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;"> -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <meta name="color-scheme" content="light">
+
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Aguas! - Historial</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body style="display: block; padding: 71px 20px 86px 20px; height: fit-content;">
+    <div class="decorative-header">
+        <span>Historial de reportes</span>
+    </div>
+
+    <div id="alert-placeholder"></div>
+    <div id="navbar"></div>
+
+    <div class="report-history-container">
+        <div id="user-record" class="list-group"></div>
+
+        <!-- Modal details-->
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="infoModalLabel">Detalles del reporte</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Número de Reporte:</strong> <span id="IdReport">--</span></p>
+                        <p><strong>Número de Casa:</strong> <span id="HouseNumber">--</span></p>
+                        <p><strong>Calle:</strong> <span id="Street">--</span></p>
+                        <p><strong>Colonia:</strong> <span id="Neighborhood">--</span></p>
+                        <p><strong>Tipo de Reporte:</strong> <span id="ReportType">--</span></p>
+                        <p><strong>Descripción:</strong> <span id="Description">--</span></p>
+                        <p><strong>Estado:</strong> <span id="Status">--</span></p>
+                        <p><strong>Fecha de Creación:</strong> <span id="CreationDate">--</span></p>
+                        <p><strong>Fecha de Modificación:</strong> <span id="ModificationDate">--</span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btn-report-edit" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Editar</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Borrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal edit -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar Reporte</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Número de Reporte:</strong> <span id="Edit-IdReport">--</span></p>
+                        <p><strong>Tipo de reporte:</strong> <span id="Edit-ReportType">--</span></p>
+                        <p><strong>Fecha de Creación:</strong> <span id="Edit-CreationDate">--</span></p>
+                        <form>
+                            <div class="mb-3">
+                                <label for="Edit-Description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="Edit-Description" rows="3" placeholder="Detalles del reporte"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Edit-Status" class="form-label">Estado del Reporte</label>
+                                <select class="form-select" id="Edit-Status">
+                                    <option value="1">1 - Pendiente</option>
+                                    <option value="2">2 - En proceso</option>
+                                    <option value="3">3 - Resuelto</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btn-report-save" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal delete confirmation -->
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmación de eliminación</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea borrar este reporte? Esta acción no se puede deshacer.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="btn-report-delete" class="btn btn-danger">Borrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Scripts -->
+    <script src="cordova.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/alert.js"></script>
+    <script src="js/user-record.js"></script>
+
+    <!-- Script views -->
+    <script src="js/views.js"></script>
+    <script>
+        loadView('navbar', 'navbar');
+        document.addEventListener('gesturestart', (event) => { event.preventDefault(); }, false);
+    </script>
+</body>
+
+</html>
