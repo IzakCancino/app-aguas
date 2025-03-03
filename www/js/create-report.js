@@ -20,6 +20,7 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#
 let map;
+$("input").prop("disabled", true)
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -75,7 +76,6 @@ function onDeviceReady() {
           return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
         })
         .forEach(reportType => {
-          console.log(reportType.IdReportType, reportType.Name);
           selectReportType.append(`
                         <option value=${reportType.IdReportType}>
                             ${reportType.Name}
@@ -85,6 +85,7 @@ function onDeviceReady() {
       console.log(selectReportType);
     },
     error: function (xhr, status, error) {
+      generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to get the report types: ', { xhr, status, error });
     }
   });
@@ -108,8 +109,11 @@ function onDeviceReady() {
         $('#HouseNumber').attr("value", data.address.house_number);
         $('#Street').attr("value", data.address.road);
         $('#Neighborhood').attr("value", data.address.county);
+
+        $("input").prop("disabled", false)
       },
       error: function (xhr, status, error) {
+        generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
         console.error('Error while trying to get the address: ', error);
       }
     });

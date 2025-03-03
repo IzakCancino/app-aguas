@@ -49,40 +49,64 @@
 </head>
 
 <body>
+    <div class="decorative-header">
+        <span>Creación de Reporte</span>
+    </div>
+
     <div id="alert-placeholder"></div>
     <div id="navbar"></div>
 
-    <h1>Aguas!</h1>
-    <section id="location-map">
-        <p>Escoge la ubicación de tu reporte</p>
-        <div id="map" style="width: 300px; height: 300px;"></div>
-        <button id="btn-map-select">Seleccionar</button>
-        <p id="address"></p>
-    </section>
-    <section id="location-form">
-        <p>Confirme los datos de ubicación.</p>
-        <form action="#" method="post" id="form-create-report">
-            <input type="hidden" name="Latitude" id="Latitude" required min="-90" max="90">
-            <input type="hidden" name="Longitude" id="Longitude" required min="-180" max="180">
+    <div class="container mt-4 pb-5 container-custom" style="margin-top: 80px;">
 
-            <label for="HouseNumber">Número de casa: </label>
-            <input type="HouseNumber" name="HouseNumber" id="HouseNumber" required maxlength="10">
+        <!-- Mapita -->
+        <section id="location-map" class="mb-4">
+            <div id="map" class="w-100" style="height: 200px; background-color: #e0e0e0; border-radius: 8px;"></div>
+            <button id="btn-map-select" class="btn btn-primary w-100 mt-2">Seleccionar ubicación</button>
+            <p id="address" class="text-center mt-2"></p>
+        </section>
 
-            <label for="Street">Calle: </label>
-            <input type="text" name="Street" id="Street" required maxlength="50">
+        <!-- Formulario -->
+        <section id="location-form">
+            <form action="#" method="post" id="form-create-report" class="row g-3 form-container">
+                <input type="hidden" name="Latitude" id="Latitude" required>
+                <input type="hidden" name="Longitude" id="Longitude" required>
 
-            <label for="Neighborhood">Colonia: </label>
-            <input type="text" name="Neighborhood" id="Neighborhood" required maxlength="50">
+                <!-- Fila para los campos de "Número de casa" y "Calle" -->
+                <div class="row g-3"> <!-- Aquí agrupamos los dos campos en una fila -->
+                    <div class="col-6">
+                        <label for="HouseNumber" class="form-label">Num de casa</label>
+                        <input type="text" name="HouseNumber" id="HouseNumber" class="form-control" required maxlength="10">
+                    </div>
 
-            <label for="IdReportType">Tipo de reporte: </label>
-            <select name="IdReportType" id="IdReportType" required></select>
+                    <div class="col-6">
+                        <label for="Street" class="form-label">Calle</label>
+                        <input type="text" name="Street" id="Street" class="form-control" required maxlength="50">
+                    </div>
+                </div>
 
-            <label for="Description">Descripción: </label>
-            <textarea name="Description" id="Description" required placeholder="Información acerca del reporte" maxlength="300"></textarea>
+                <div class="col-md-6">
+                    <label for="Neighborhood" class="form-label">Colonia</label>
+                    <input type="text" name="Neighborhood" id="Neighborhood" class="form-control" required maxlength="50">
+                </div>
 
-            <input type="submit" value="Enviar">
-        </form>
-    </section>
+                <div class="col-md-6">
+                    <label for="IdReportType" class="form-label">Tipo de reporte</label>
+                    <select name="IdReportType" id="IdReportType" class="form-select" required>
+                        <option value="" disabled selected>Seleccione un tipo de reporte</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label for="Description" class="form-label">Descripción</label>
+                    <textarea name="Description" id="Description" class="form-control" required placeholder="Información acerca del reporte" maxlength="300" rows="2"></textarea>
+                </div>
+
+                <div class="col-12 text-center">
+                    <input type="submit" value="Enviar" class="btn btn-success w-50">
+                </div>
+            </form>
+        </section>
+    </div>
 
 
 
@@ -92,7 +116,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/alert.js"></script>
-    <script src="js/crear-reporte.js"></script>
+    <script src="js/create-report.js"></script>
 
     <!-- Script views -->
     <script src="js/views.js"></script>
