@@ -1,0 +1,21 @@
+const HEADER_API_KEY = { 'X-Api-Key': 'DEF000HALVqKBLgnkxUmO04GouTRslzA2fts40v7QmrxZ3IBn1L6ZdupMhVZci0' };
+
+// Declare environment
+const LOCAL_SERVER = 'https://localhost:44328/api';
+const PUBLIC_SERVER = 'https://aguasss.bsite.net/api';
+
+const ENV = PUBLIC_SERVER;
+
+// Users
+const CREATE_USER = ENV + '/Users/Create';
+const LOGIN = ENV + '/Users/Login';
+const CONFIRM_CREDENTIALS = ENV + '/Users/ConfirmCredentials';
+
+// Reports
+const GET_REPORTS = ENV + '/Reports/Read';
+
+// Report types
+const GET_REPORT_TYPES = ENV + '/ReportTypes/Read';
+
+// Organizations
+const GET_ORGANIZATIONS = ENV + '/Organizations/Read';
