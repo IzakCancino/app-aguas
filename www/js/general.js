@@ -56,7 +56,14 @@ function setReports(map, idReportType = 0, status = 0, daysAgo = 0) {
       }
 
       response.forEach(report => {
-        var marker = L.marker([report.Latitude, report.Longitude])
+        var icon = L.icon({
+          iconUrl: `img/${report.ReportType.Organization.Code}-pin.png`,
+          iconSize: [30, 30],
+          iconAnchor: [15, 15],
+          popupAnchor: [0, -13]
+        });
+
+        var marker = L.marker([report.Latitude, report.Longitude], { icon: icon })
           .addTo(map)
           .bindPopup(`#${report.IdReport}: ${report.Description}`);
       });

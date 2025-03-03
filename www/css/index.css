@@ -11,6 +11,39 @@
     opacity: 0.9;
 }
 
+/* 911 */
+.emergency-button:nth-child(1) {
+    background-color: #ca1628 !important;
+    margin-bottom: 50px;
+    padding: 50px 20px;
+    font-size: 2em;
+}
+
+/* Civil */
+.emergency-button:nth-child(2) {
+    background-color: #F58300 !important;
+}
+
+/* Animal */
+.emergency-button:nth-child(3) {
+    background-color: #62462D !important;
+}
+
+/* COMAPA */
+.emergency-button:nth-child(4) {
+    background-color: #0A89FF !important;
+}
+
+/* CFE */
+.emergency-button:nth-child(5) {
+    background-color: #c6bd0d !important;
+}
+
+/* Vialidad */
+.emergency-button:nth-child(6) {
+    background-color: #44B200 !important;
+}
+
 /*General*/
 body {
     font-family: 'Poppins', sans-serif;

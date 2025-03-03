@@ -13,7 +13,7 @@ $.ajax({
       })
       .forEach(data => {
         divOrganizations.append(`
-          <a href="create-report.html?type=${data.IdOrganization}" class="organizations" style="background-image: url('img/${data.Color}.png');">
+          <a href="create-report.html?type=${data.IdOrganization}" class="organizations" style="background-image: url('img/${data.Code}.png');">
             <p class="w-100">${data.Name}</p>
           </a>
         `);

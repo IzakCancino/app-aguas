@@ -121,7 +121,7 @@ $("#form-create-report").on("submit", e => {
   e.preventDefault();
 
   let data = {
-    "IdReportType": new URLSearchParams(window.location.search).get("type"),
+    "IdReportType": e.target.elements.IdReportType.value,
     "IdUser": localStorage.getItem("IdUser"),
     "Latitude": e.target.elements.Latitude.value,
     "Longitude": e.target.elements.Longitude.value,
