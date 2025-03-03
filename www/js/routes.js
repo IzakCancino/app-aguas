@@ -13,6 +13,7 @@ const CONFIRM_CREDENTIALS = ENV + '/Users/ConfirmCredentials';
 
 // Reports
 const GET_REPORTS = ENV + '/Reports/Read';
+const CREATE_REPORT = ENV + '/Reports/Create'
 
 // Report types
 const GET_REPORT_TYPES = ENV + '/ReportTypes/Read';

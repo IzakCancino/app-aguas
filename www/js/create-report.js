@@ -59,65 +59,92 @@ function onDeviceReady() {
 
   // Geolocation
   navigator.geolocation.getCurrentPosition(onPositionSuccess, onPositionError);
+}
+
+$.ajax({
+  url: GET_ORGANIZATIONS + "/" + new URLSearchParams(window.location.search).get("type"), // Gets the value `type` in the URL
+  type: "GET",
+  headers: HEADER_API_KEY,
+  success: function (organization) {
+    let selectReportType = $('#IdReportType');
+
+    organization.ReportTypes
+      .sort(function (a, b) {
+        var textA = a.Name.toUpperCase();
+        var textB = b.Name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      })
+      .forEach(reportType => {
+        selectReportType.append(`
+                      <option value=${reportType.IdReportType}>
+                          ${reportType.Name}
+                      </option>`
+        );
+      });
+  },
+  error: function (xhr, status, error) {
+    generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
+    console.error('Error while trying to get the report types: ', { xhr, status, error });
+  }
+});
 
 
+//
+// Listeners
+//
+
+$('#btn-map-select').click(function () {
+  let coords = map.getCenter();
 
   $.ajax({
-    url: GET_ORGANIZATIONS + "/" + new URLSearchParams(window.location.search).get("type"), // Gets the value `type` in the URL
+    url: `https://us1.locationiq.com/v1/reverse?key=pk.0892b979f4c92709838f3cddbbef7736&lat=${coords.lat}&lon=${coords.lng}&format=json`,
     type: "GET",
-    headers: HEADER_API_KEY,
-    success: function (organization) {
-      let selectReportType = $('#IdReportType');
+    success: function (data) {
+      console.log(data.display_name);
 
-      organization.ReportTypes
-        .sort(function (a, b) {
-          var textA = a.Name.toUpperCase();
-          var textB = b.Name.toUpperCase();
-          return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-        })
-        .forEach(reportType => {
-          selectReportType.append(`
-                        <option value=${reportType.IdReportType}>
-                            ${reportType.Name}
-                        </option>`
-          );
-        });
-      console.log(selectReportType);
+      $('#Latitude').attr("value", coords.lat);
+      $('#Longitude').attr("value", coords.lng);
+      $('#HouseNumber').attr("value", data.address.house_number);
+      $('#Street').attr("value", data.address.road);
+      $('#Neighborhood').attr("value", data.address.county);
+
+      $("input").prop("disabled", false)
     },
     error: function (xhr, status, error) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
-      console.error('Error while trying to get the report types: ', { xhr, status, error });
+      console.error('Error while trying to get the address: ', error);
     }
   });
+});
 
+$("#form-create-report").on("submit", e => {
+  e.preventDefault();
 
-  //
-  // Listeners
-  //
+  let data = {
+    "IdReportType": new URLSearchParams(window.location.search).get("type"),
+    "IdUser": localStorage.getItem("IdUser"),
+    "Latitude": e.target.elements.Latitude.value,
+    "Longitude": e.target.elements.Longitude.value,
+    "HouseNumber": e.target.elements.HouseNumber.value,
+    "Street": e.target.elements.Street.value,
+    "Neighborhood": e.target.elements.Neighborhood.value,
+    "Description": e.target.elements.Description.value
+  }
 
-  $('#btn-map-select').click(function () {
-    let coords = map.getCenter();
-
-    $.ajax({
-      url: `https://us1.locationiq.com/v1/reverse?key=pk.0892b979f4c92709838f3cddbbef7736&lat=${coords.lat}&lon=${coords.lng}&format=json`,
-      type: "GET",
-      success: function (data) {
-        console.log(data.display_name);
-
-        $('#Latitude').attr("value", coords.lat);
-        $('#Longitude').attr("value", coords.lng);
-        $('#HouseNumber').attr("value", data.address.house_number);
-        $('#Street').attr("value", data.address.road);
-        $('#Neighborhood').attr("value", data.address.county);
-
-        $("input").prop("disabled", false)
-      },
-      error: function (xhr, status, error) {
-        generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
-        console.error('Error while trying to get the address: ', error);
-      }
-    });
+  $.ajax({
+    url: CREATE_REPORT,
+    type: "POST",
+    data: data,
+    headers: Object.assign(
+      HEADER_API_KEY,
+      { "Authorization": `Basic ${data.IdUser}/${localStorage.getItem("SessionToken")}` }
+    ),
+    success: function (data) {
+      window.location.href = "user-record.html";
+    },
+    error: function (xhr, status, error) {
+      generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
+      console.error('Error while trying to create the report: ', { xhr, status, error });
+    }
   });
-}
-
-
+})
