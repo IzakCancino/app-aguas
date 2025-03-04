@@ -97,6 +97,8 @@ function setReports(map, idReportType = 0, status = 0, daysAgo = 0) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to browse reports: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 }
 

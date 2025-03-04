@@ -55,7 +55,11 @@ function onDeviceReady() {
         generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
         console.error('Error while trying to login: ', { xhr, status, error });
       }
+    }).always(function () {
+      $("#charging-spinner").fadeOut();
     });
+  } else {
+    $("#charging-spinner").fadeOut();
   }
 }
 

@@ -1,4 +1,6 @@
 $('#signupForm').submit(function (e) {
+  $("#charging-spinner").fadeIn();
+
   e.preventDefault();
   var name = $('#name').val();
   var lastName = $('#lastName').val();
@@ -28,5 +30,11 @@ $('#signupForm').submit(function (e) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to signup: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 });
+
+
+
+$("#charging-spinner").fadeOut();

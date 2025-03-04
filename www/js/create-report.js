@@ -20,6 +20,7 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#
 let map, selectedOrganization;
+let cordovaReady = false, organizationsReady = false;
 $("input").prop("disabled", true)
 
 document.addEventListener('deviceready', onDeviceReady, false);
@@ -59,6 +60,11 @@ function onDeviceReady() {
 
   // Geolocation
   navigator.geolocation.getCurrentPosition(onPositionSuccess, onPositionError);
+
+  cordovaReady = true;
+  if (cordovaReady && organizationsReady) {
+    $("#charging-spinner").fadeOut();
+  }
 }
 
 $.ajax({
@@ -87,6 +93,11 @@ $.ajax({
     generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
     console.error('Error while trying to get the report types: ', { xhr, status, error });
   }
+}).always(function () {
+  organizationsReady = true;
+  if (cordovaReady && organizationsReady) {
+    $("#charging-spinner").fadeOut();
+  }
 });
 
 function sendWhatsAppMessage(number, message) {
@@ -102,6 +113,7 @@ function sendWhatsAppMessage(number, message) {
 //
 
 $('#btn-map-select').click(function () {
+  $("#charging-spinner").fadeIn();
   let coords = map.getCenter();
 
   $.ajax({
@@ -122,10 +134,13 @@ $('#btn-map-select').click(function () {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to get the address: ', error);
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 });
 
 $("#form-create-report").on("submit", e => {
+  $("#charging-spinner").fadeIn();
   e.preventDefault();
 
   let data = {
@@ -181,5 +196,7 @@ $("#form-create-report").on("submit", e => {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to create the report: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 });

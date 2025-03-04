@@ -4,6 +4,8 @@ if (signup) {
 }
 
 $("#form-login").on("submit", e => {
+  $("#charging-spinner").fadeIn();
+
   e.preventDefault();
 
   let inputs = e.currentTarget.elements;
@@ -34,6 +36,11 @@ $("#form-login").on("submit", e => {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to login: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
+});
 
-})
+
+
+$("#charging-spinner").fadeOut();

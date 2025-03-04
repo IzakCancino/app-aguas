@@ -13,6 +13,7 @@ if (del) {
   generateAlert("Reporte eliminado exitosamente.")
 }
 
+// Get user historial
 $.ajax({
   url: GET_HISTORIAL,
   type: "POST",
@@ -54,6 +55,8 @@ $.ajax({
 
     // API request to get information of the clicked report
     $(".report-card").on("click", e => {
+      $("#charging-spinner").fadeIn();
+
       $.ajax({
         url: GET_REPORTS + '/' + e.currentTarget.attributes.id.value,
         type: "GET",
@@ -95,27 +98,36 @@ $.ajax({
           generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
           console.error('Error while trying to get report: ', { xhr, status, error });
         }
+      }).always(function () {
+        $("#charging-spinner").fadeOut();
       });
-    })
-
+    });
   },
   error: function (xhr, status, error) {
     generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
     console.error('Error while trying to get historial: ', { xhr, status, error });
   }
+}).always(function () {
+  $("#charging-spinner").fadeOut();
 });
 
 // Executed when modal to start editing is clicked
 $("#btn-report-edit").on("click", () => {
+  $("#charging-spinner").fadeIn();
+
   $("#Edit-IdReport").text(lastReport.IdReport);
   $("#Edit-ReportType").text(lastReport.ReportType.Name);
   $("#Edit-CreationDate").text(new Intl.DateTimeFormat("es-ES").format(new Date(lastReport.CreationDate)));
   $("#Edit-Description").text(lastReport.Description);
   $("#Edit-Status").val(lastReport.Status);
+
+  $("#charging-spinner").fadeOut();
 })
 
 // Executed when report is saved
 $("#btn-report-save").on("click", () => {
+  $("#charging-spinner").fadeIn();
+
   let data = {
     "IdReport": lastReport.IdReport,
     "IdReportType": lastReport.ReportType.IdReportType,
@@ -145,10 +157,15 @@ $("#btn-report-save").on("click", () => {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to update report: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 });
 
+// Executed when report is deleted
 $("#btn-report-delete").on("click", () => {
+  $("#charging-spinner").fadeIn();
+
   $.ajax({
     url: DELETE_REPORT + "?id=" + lastReport.IdReport,
     type: "POST",
@@ -163,5 +180,7 @@ $("#btn-report-delete").on("click", () => {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to delete report: ', { xhr, status, error });
     }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
   });
 });
