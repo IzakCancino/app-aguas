@@ -63,9 +63,34 @@ function setReports(map, idReportType = 0, status = 0, daysAgo = 0) {
           popupAnchor: [0, -13]
         });
 
+        let status;
+        switch (report.Status) {
+          case 1:
+            status = "Pendiente"
+            break;
+          case 2:
+            status = "En proceso"
+            break;
+          case 3:
+            status = "Resuelto"
+            break;
+          default:
+            status = "N/A"
+            break;
+        }
+
+        let info = `
+          &bull; ID del Reporte: ${report.IdReport}<br>
+          &bull; Tipo de Reporte: ${report.ReportType.Name}<br>
+          &bull; Descripción: ${report.Description}<br>
+          &bull; Estatus: ${status} (${report.Status}/3)<br>
+          &bull; Fecha de Creación: ${new Intl.DateTimeFormat("es-ES").format(new Date(report.CreationDate))}<br>
+          &bull; Fecha de Edición: ${new Intl.DateTimeFormat("es-ES").format(new Date(report.ModificationDate))}
+        `;
+
         var marker = L.marker([report.Latitude, report.Longitude], { icon: icon })
           .addTo(map)
-          .bindPopup(`#${report.IdReport}: ${report.Description}`);
+          .bindPopup(info);
       });
     },
     error: function (xhr, status, error) {

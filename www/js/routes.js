@@ -7,6 +7,7 @@ const PUBLIC_SERVER = 'https://aguasss.bsite.net/api';
 const ENV = PUBLIC_SERVER;
 
 // Users
+const GET_USER = ENV + '/Users/Read'
 const CREATE_USER = ENV + '/Users/Create';
 const LOGIN = ENV + '/Users/Login';
 const CONFIRM_CREDENTIALS = ENV + '/Users/ConfirmCredentials';

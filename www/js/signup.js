@@ -19,6 +19,7 @@ $('#signupForm').submit(function (e) {
       if (!data.Success) {
         generateAlert(data.Message, false)
         console.error(data);
+        return;
       }
 
       window.location.href = "login.html?signup=1";

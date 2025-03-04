@@ -28,6 +28,11 @@ $.ajax({
       return;
     }
 
+    if (response.Reports.length == 0) {
+      generateAlert("Aún no cuentas con reportes en tu historial.")
+      return;
+    }
+
     let divRecord = $("#user-record");
 
     response.Reports

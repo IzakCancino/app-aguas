@@ -19,7 +19,7 @@
 
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#
-let map;
+let map, selectedOrganization;
 $("input").prop("disabled", true)
 
 document.addEventListener('deviceready', onDeviceReady, false);
@@ -66,6 +66,7 @@ $.ajax({
   type: "GET",
   headers: HEADER_API_KEY,
   success: function (organization) {
+    selectedOrganization = organization
     let selectReportType = $('#IdReportType');
 
     organization.ReportTypes
@@ -87,6 +88,13 @@ $.ajax({
     console.error('Error while trying to get the report types: ', { xhr, status, error });
   }
 });
+
+function sendWhatsAppMessage(number, message) {
+  var url = "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
+  console.log(url);
+  window.location.href = url;
+}
+
 
 
 //
@@ -131,6 +139,7 @@ $("#form-create-report").on("submit", e => {
     "Description": e.target.elements.Description.value
   }
 
+  // Report creation
   $.ajax({
     url: CREATE_REPORT,
     type: "POST",
@@ -139,12 +148,38 @@ $("#form-create-report").on("submit", e => {
       HEADER_API_KEY,
       { "Authorization": `Basic ${data.IdUser}/${localStorage.getItem("SessionToken")}` }
     ),
-    success: function (data) {
-      window.location.href = "user-record.html?create=1";
+    success: function (_) {
+      // Send or call to report
+      if (selectedOrganization.IsMessageable) {
+        // User full name
+        $.ajax({
+          url: GET_USER + '/' + localStorage.getItem("IdUser"),
+          type: "GET",
+          headers: HEADER_API_KEY,
+          success: function (dataUser) {
+            let userName = dataUser.Name + ' ' + dataUser.LastName;
+            sendWhatsAppMessage(selectedOrganization.Phone, `Mi nombre es ${userName}, me comunico con ustedes para reportar que hay una situación de tipo ${$("#IdReportType")[0].selectedOptions[0].text} y ${data.Description}, en la ubicación: Col. ${data.Neighborhood}, Calle ${data.Street}, #${data.HouseNumber}.`);
+
+            // Success
+            window.location.href = "user-record.html?create=1";
+          },
+          error: function (xhr, status, error) {
+            generateAlert("Un error inesperado ha sucedido.<br>El reporte fue creado, pero no se pudo redirigir.", false);
+            console.error('Error while trying to redirect the report: ');
+            return;
+          }
+        });
+      }
+      else {
+        window.location.href = `tel:${selectedOrganization.Phone}`;
+
+        // Success
+        window.location.href = "user-record.html?create=1";
+      }
     },
     error: function (xhr, status, error) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
       console.error('Error while trying to create the report: ', { xhr, status, error });
     }
   });
-})
+});
