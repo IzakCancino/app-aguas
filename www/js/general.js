@@ -20,6 +20,46 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#
 document.addEventListener('deviceready', onDeviceReady, false);
+let map;
+
+let urlParams = [0, 0, 0];
+let browse = new URLSearchParams(window.location.search).get("browse");
+if (browse) {
+  let params = new URLSearchParams(window.location.search);
+  urlParams = [params.get("idOrganization"), params.get("status"), params.get("daysAgo")];
+  $("#status").val(urlParams[1]);
+  $("#daysAgo").val(urlParams[2]);
+}
+
+// Get organizations
+$.ajax({
+  url: GET_ORGANIZATIONS,
+  type: "GET",
+  headers: HEADER_API_KEY,
+  success: function (organization) {
+    let divOrganizations = $('#idOrganization');
+
+    organization
+      .sort(function (a, b) {
+        var textA = a.Name.toUpperCase();
+        var textB = b.Name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      })
+      .forEach(data => {
+        divOrganizations.append(`
+          <option value="${data.IdOrganization}">${data.Name}</option>
+        `);
+      });
+
+    // Set previous browsed organization
+    $("#idOrganization").val(urlParams[0]);
+  },
+  error: function (xhr, status, error) {
+    generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
+    console.error('Error while trying to get the organizations: ', { xhr, status, error });
+  }
+});
+
 
 // Function to generate main map
 function createMap(latitude, longitude, actualLocation = true) {
@@ -41,13 +81,13 @@ function createMap(latitude, longitude, actualLocation = true) {
     circle.bindPopup("Tu ubicación actual.")
   }
 
-  setReports(map);
+  setReports(map, urlParams[0], urlParams[1], urlParams[2]);
 }
 
 // Function with API request to get and set the reports based on certain criteria
-function setReports(map, idReportType = 0, status = 0, daysAgo = 0) {
+function setReports(map, idOrganization = 0, status = 0, daysAgo = 0) {
   $.ajax({
-    url: GET_REPORTS + `?idReportType=${idReportType}&status=${status}&daysAgo=${daysAgo}`,
+    url: GET_REPORTS + `?idOrganization=${idOrganization}&status=${status}&daysAgo=${daysAgo}`,
     type: "GET",
     headers: HEADER_API_KEY,
     success: function (response) {

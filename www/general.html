@@ -69,9 +69,57 @@
     <div id="alert-placeholder"></div>
     <div id="navbar"></div>
 
+    <button type="button" id="btn-report-browse" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <i class="bi bi-search text-white"></i>
+    </button>
+
     <div id="map" style="height: calc(100% - 112px); width: 100vw;"></div>
 
+    <!-- Modal browse -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Búsqueda de Reportes</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" action="general.html" id="form-browser">
+                        <input type="hidden" name="browse" value="1">
+                        <div class="mb-3">
+                            <label for="idOrganization" class="form-label">Seleccione la organización</label>
+                            <select name="idOrganization" id="idOrganization" class="form-select" required>
+                                <option value="0" selected>Todas</option>
+                            </select>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Estado del Reporte</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="0">Todos</option>
+                                <option value="1">1 - Pendiente</option>
+                                <option value="2">2 - En proceso</option>
+                                <option value="3">3 - Resuelto</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="daysAgo" class="form-label">Tiempo desde la creación</label>
+                            <select class="form-select" id="daysAgo" name="daysAgo" required>
+                                <option value="0">Todo el tiempo</option>
+                                <option value="1">Un día</option>
+                                <option value="7">Una semana</option>
+                                <option value="30">Un mes</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="form-browser" id="btn-report-save" class="btn btn-success">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="cordova.js"></script>
