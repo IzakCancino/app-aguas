@@ -80,25 +80,25 @@
         <!-- Formulario -->
         <section id="location-form">
             <form action="#" method="post" id="form-create-report" class="row g-3 form-container">
-                <input type="hidden" name="Latitude" id="Latitude" required>
-                <input type="hidden" name="Longitude" id="Longitude" required>
+                <input type="hidden" name="Latitude" id="Latitude" required min="-90" max="90">
+                <input type="hidden" name="Longitude" id="Longitude" required min="-180" max="180">
 
                 <!-- Fila para los campos de "Número de casa" y "Calle" -->
                 <div class="row g-3"> <!-- Aquí agrupamos los dos campos en una fila -->
                     <div class="col-6">
                         <label for="HouseNumber" class="form-label">Num de casa</label>
-                        <input type="text" name="HouseNumber" id="HouseNumber" class="form-control" required maxlength="10">
+                        <input type="text" name="HouseNumber" id="HouseNumber" class="form-control" required minlength="1" maxlength="10">
                     </div>
 
                     <div class="col-6">
                         <label for="Street" class="form-label">Calle</label>
-                        <input type="text" name="Street" id="Street" class="form-control" required maxlength="50">
+                        <input type="text" name="Street" id="Street" class="form-control" required minlength="5" maxlength="50">
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <label for="Neighborhood" class="form-label">Colonia</label>
-                    <input type="text" name="Neighborhood" id="Neighborhood" class="form-control" required maxlength="50">
+                    <input type="text" name="Neighborhood" id="Neighborhood" class="form-control" required minlength="5" maxlength="50">
                 </div>
 
                 <div class="col-md-6">
@@ -110,7 +110,7 @@
 
                 <div class="col-12">
                     <label for="Description" class="form-label">Descripción</label>
-                    <textarea name="Description" id="Description" class="form-control" required placeholder="Información acerca del reporte" maxlength="300" rows="2"></textarea>
+                    <textarea name="Description" id="Description" class="form-control" required placeholder="Información acerca del reporte" minlength="10" maxlength="300" rows="2"></textarea>
                 </div>
 
                 <div class="col-12 text-center">

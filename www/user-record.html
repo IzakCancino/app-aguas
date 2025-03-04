@@ -111,12 +111,12 @@
                         <form>
                             <div class="mb-3">
                                 <label for="Edit-Description" class="form-label">Descripción</label>
-                                <textarea class="form-control" id="Edit-Description" rows="3" placeholder="Detalles del reporte"></textarea>
+                                <textarea class="form-control" id="Edit-Description" rows="3" placeholder="Detalles del reporte" required minlength="10" maxlength="300"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="Edit-Status" class="form-label">Estado del Reporte</label>
-                                <select class="form-select" id="Edit-Status">
+                                <select class="form-select" id="Edit-Status" required>
                                     <option value="1">1 - Pendiente</option>
                                     <option value="2">2 - En proceso</option>
                                     <option value="3">3 - Resuelto</option>

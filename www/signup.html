@@ -66,10 +66,10 @@
             <p>Regístrate ahora.</p>
         </div>
         <form id="signupForm">
-            <input id="name" type="text" placeholder="Ingresa tu nombre" required="" />
-            <input id="lastName" type="text" placeholder="Ingresa tu apellido" required="" />
-            <input id="email" type="email" placeholder="Ingresa tu correo electrónico" required="" />
-            <input id="password" type="password" placeholder="Elige una contraseña" required="" />
+            <input id="name" type="text" placeholder="Ingresa tu nombre" required minlength="3" maxlength="50" />
+            <input id="lastName" type="text" placeholder="Ingresa tu apellido" required minlength="3" maxlength="50" />
+            <input id="email" type="email" placeholder="Ingresa tu correo electrónico" required maxlength="320" />
+            <input id="password" type="password" placeholder="Elige una contraseña" required minlength="5" maxlength="50" />
             <input type="submit" value="Regístrate" />
             <span> ¿Ya eres miembro? <a href="login.html">Inicia sesión aquí</a></span>
             <a href="index.html" class="btn btn-secondary">

@@ -48,8 +48,8 @@
             <p>Un gusto tenerte de vuelta.</p>
         </div>
         <form action="#" method="post" id="form-login">
-            <input type="email" name="Email" id="Email" placeholder="Ingresa tu correo electrónico" required />
-            <input type="password" name="Password" id="Password" placeholder="Ingresa tu contraseña" required />
+            <input type="email" name="Email" id="Email" placeholder="Ingresa tu correo electrónico" required maxlength="320" />
+            <input type="password" name="Password" id="Password" placeholder="Ingresa tu contraseña" required minlength="5" maxlength="50" />
             <input type="submit" value="Iniciar sesión" />
             <span> ¿No tienes una cuenta? <a href="signup.html">Regístrate</a></span>
             <a href="index.html" class="btn btn-secondary">
