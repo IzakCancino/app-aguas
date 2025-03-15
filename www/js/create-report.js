@@ -124,9 +124,9 @@ $('#btn-map-select').click(function () {
 
       $('#Latitude').attr("value", coords.lat);
       $('#Longitude').attr("value", coords.lng);
-      $('#HouseNumber').attr("value", data.address.house_number);
-      $('#Street').attr("value", data.address.road);
-      $('#Neighborhood').attr("value", data.address.county);
+      $('#HouseNumber').attr("value", (data.address.house_number ?? "").substring(0, 10));
+      $('#Street').attr("value", (data.address.road ?? "").substring(0, 50));
+      $('#Neighborhood').attr("value", (data.address.county ?? "").substring(0, 50));
 
       $("input").prop("disabled", false)
     },
@@ -194,7 +194,7 @@ $("#form-create-report").on("submit", e => {
     },
     error: function (xhr, status, error) {
       generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
-      console.error('Error while trying to create the report: ', { xhr, status, error });
+      console.error('Error while trying to create the report: ', { xhr, status, error }, data);
     }
   }).always(function () {
     $("#charging-spinner").fadeOut();
