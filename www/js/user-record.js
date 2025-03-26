@@ -111,6 +111,38 @@ $.ajax({
   $("#charging-spinner").fadeOut();
 });
 
+// Send message via WhatsApp
+function sendWhatsAppMessage(number, message) {
+  var url = "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
+  console.log(url);
+  window.location.href = url;
+}
+
+// Executed when modal to start editing is clicked
+$("#btn-report-again").on("click", () => {
+  $("#charging-spinner").fadeIn();
+
+  $.ajax({
+    url: GET_ORGANIZATIONS + "/" + lastReport.ReportType.Organization.IdOrganization, // Gets the organization from the report
+    type: "GET",
+    headers: HEADER_API_KEY,
+    success: function (organization) {
+      if (organization.IsMessageable) {
+        sendWhatsAppMessage(organization.Phone, `Me comunico con ustedes para volver a reportar que hay una situación de tipo ${lastReport.ReportType.Name} y ${lastReport.Description}, en la ubicación: Col. ${lastReport.Neighborhood}, Calle ${lastReport.Street}, #${lastReport.HouseNumber}.`);
+      }
+      else {
+        window.location.href = `tel:${organization.Phone}`;
+      }
+    },
+    error: function (xhr, status, error) {
+      generateAlert("Un error inesperado ha sucedido.<br>Por favor vuelve a intentarlo.", false);
+      console.error('Error while trying to get the report types: ', { xhr, status, error });
+    }
+  }).always(function () {
+    $("#charging-spinner").fadeOut();
+  });
+});
+
 // Executed when modal to start editing is clicked
 $("#btn-report-edit").on("click", () => {
   $("#charging-spinner").fadeIn();
