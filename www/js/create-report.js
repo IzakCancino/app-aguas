@@ -117,7 +117,7 @@ $('#btn-map-select').click(function () {
   let coords = map.getCenter();
 
   $.ajax({
-    url: `https://us1.locationiq.com/v1/reverse?key=pk.0892b979f4c92709838f3cddbbef7736&lat=${coords.lat}&lon=${coords.lng}&format=json`,
+    url: `https://us1.locationiq.com/v1/reverse?key=${API_KEYS.LOCATION_IQ}&lat=${coords.lat}&lon=${coords.lng}&format=json`,
     type: "GET",
     success: function (data) {
       console.log(data.display_name);

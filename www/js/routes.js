@@ -1,4 +1,4 @@
-const HEADER_API_KEY = { 'X-Api-Key': 'DEF000HALVqKBLgnkxUmO04GouTRslzA2fts40v7QmrxZ3IBn1L6ZdupMhVZci0' };
+const HEADER_API_KEY = { 'X-Api-Key': API_KEYS.AGUAS };
 
 // Declare environment
 const LOCAL_SERVER = 'https://localhost:44328/api';

@@ -1,0 +1,4 @@
+const API_KEYS = {
+  AGUAS: "THE_API_KEY",
+  LOCATION_IQ: "THE_OTHER_API_KEY"
+};
