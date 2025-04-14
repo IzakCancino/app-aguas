@@ -1,8 +1,8 @@
 {
-  "name": "io.cordova.hellocordova",
-  "displayName": "HelloCordova",
+  "name": "io.cordova.aguas",
+  "displayName": "Aguas!",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "Aplicación para realización y seguimiento de reportes ciudadanos.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,10 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Apache Cordova Team",
+  "author": "Izak Cancino and Jensine Velazco",
   "license": "Apache-2.0",
   "devDependencies": {
-    "cordova-android": "^13.0.0",
+    "cordova-android": "^14.0.0",
     "cordova-browser": "^7.0.0",
     "cordova-plugin-geolocation": "^5.0.0",
     "cordova-plugin-screen-orientation": "^3.0.4",
